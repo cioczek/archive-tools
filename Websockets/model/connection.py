@@ -4,7 +4,7 @@ from fastapi import WebSocket
 
 class ConnectionManager:
     def __init__(self):
-        self.active_connections: Dict[WebSocket, dict] = {}
+        self.active_connections: Dict[WebSocket, dict] = {}         
 
     async def connect(self, websocket: WebSocket):
         await websocket.accept()
@@ -19,6 +19,7 @@ class ConnectionManager:
     async def broadcast(self, message: str):
         for connection in self.active_connections.keys():
             await connection.send_text(message)
+            print(len(self.active_connections))
 
     def set_name(self, websocket: WebSocket, name: str):
         if websocket in self.active_connections:

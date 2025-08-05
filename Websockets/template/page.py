@@ -2,14 +2,30 @@ body = """
 <!DOCTYPE html>
 <html>
     <head>
+       
+        <style>
+            .rounded {
+               border-radius: 0px
+            }
+            body {
+                background-color: coral;
+            }
+            #messages {
+                max-height: 400px;
+                overflow-y: auto;
+                border: 1px solid #ccc;
+                padding: 10px;
+                background-color: #f8f9a;
+            }
+        </style>
         <title>Chatzão</title>
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     </head>
-    <body>
-        <div class="container mt-3">
-            <h1>Chat do Nicão 😘👍</h1>
-            <h2>Seu código: <span id="ws-id"></span></h2>
+    <body class="p-3 mb-2 bg-secondary text-white">
+        <div class=" rounded container mt-3 p-3 mb-2 bg-body text-dark ">
+            <h1 align="center">Chat do Nicão 😘👍</h1>
+            <p> <span id="ws-id"></span></p>
 
             <!-- Modal para pedir nome -->
             <div class="modal" id="nameModal" tabindex="-1">
@@ -28,14 +44,16 @@ body = """
                 </div>
             </div>
 
-            <!-- Form de mensagens -->
+            <!-- Form de mensagens -->                  
+            <ul id='messages' class="mt-5 list-group"></ul>
+            <br>
             <form action="" onsubmit="sendMessage(event)">
-                <input type="text" class="form-control" id="messageText" autocomplete="off"/>
-                <button class="btn btn-outline-primary mt-2">Enviar</button>
+                <input type="text" class="form-control" id="messageText" autocomplete="off"/><br>
+                
+                <button  class=" btn btn-primary btn-lg">Enviar</button>
             </form>
 
-            <ul id='messages' class="mt-5 list-group">
-            </ul>
+              
         </div>
 
         <!-- Bootstrap JS -->
@@ -61,7 +79,7 @@ body = """
                 nameModal.hide(); // Fecha o modal
 
                 // Abre a conexão WebSocket
-                ws = new WebSocket(`ws://localhost:8000/ws/${client_id}`);
+                ws = new WebSocket(`ws://192.168.10.149:8000/ws/${client_id}`);
                 ws.onopen = function() {
                     ws.send(name); // Envia o nome como primeira mensagem
                 };
@@ -71,6 +89,7 @@ body = """
                     message.classList.add('list-group-item');
                     message.textContent = event.data;
                     messages.appendChild(message);
+                    messages.scrollTop = messages.scrollHeight;
                 };
             }
 

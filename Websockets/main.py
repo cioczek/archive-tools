@@ -15,17 +15,17 @@ async def get():
 async def websocket_endpoint(websocket: WebSocket, client_id: int):
     await manager.connect(websocket)
     try:
-        await websocket.send_text("Canal Supervisionado 🎉")
+        await websocket.send_text("[Bate-Papo 01] - Chat Geral 🎉")
         name = await websocket.receive_text()
         manager.set_name(websocket, name)
         await manager.broadcast(f"{name} entrou no chat!")
 
-        while True:
+        while True:            
             data = await websocket.receive_text()
             user_name = manager.get_name(websocket)
-            await manager.send_personal_message(f"Você disse: {data}", websocket)
+            #await manager.send_personal_message(f"Você disse: {data}", websocket)
             await manager.broadcast(f"{user_name} diz: {data}")
-
+           
     except WebSocketDisconnect:
         user_name = manager.get_name(websocket)
         manager.disconnect(websocket)
